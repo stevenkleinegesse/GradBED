@@ -1,9 +1,0 @@
-name: mibed-env
-channels:
-    - pytorch
-    - conda-forge
-dependencies:
-    - tqdm
-    - scipy
-    - numpy
-    - joblib 

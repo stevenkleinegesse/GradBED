@@ -1,4 +1,4 @@
-name: gradbed
+name: gradbed-env
 channels:
     - pytorch
     - conda-forge

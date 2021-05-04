@@ -11,7 +11,7 @@ Install conda dependencies and the project with
 
 ```bash
 conda env create -f environment.yml
-conda activate gradbed
+conda activate gradbed-env
 python setup.py develop
 ```
 
@@ -28,8 +28,8 @@ Check local versions of cuda available: ls -d /opt/cu*. You should use one of th
 Create a Conda environment with GPU-enabled PyTorch (with e.g. Cuda 10.1): 
 
 ```bash
-conda create -n gradbed python=3.8 pytorch torchvision cudatoolkit=10.1 -c pytorch
-conda activate gradbed
+conda create -n gradbed-env python=3.8 pytorch torchvision cudatoolkit=10.1 -c pytorch
+conda activate gradbed-env
 ```
 
 Then install dependencies in the GPU environment file:
