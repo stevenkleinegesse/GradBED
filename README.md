@@ -2,6 +2,9 @@
 
 Research code for the submission "Gradient-Based Bayesian Experimental Design for Implicit Models using Mutual Information Lower Bounds".
 
+![](./plots/training_animation.gif)
+
+
 ## CPU Setup
 
 Install conda dependencies and the project with
