@@ -1,0 +1,9 @@
+name: gradbed
+channels:
+    - pytorch
+    - conda-forge
+dependencies:
+    - tqdm
+    - scipy
+    - numpy
+    - joblib 

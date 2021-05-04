@@ -1,0 +1,16 @@
+name: mibed-env
+channels:
+    - pytorch
+    - conda-forge
+dependencies:
+    - python=3.8
+    - pytorch=1.6
+    - matplotlib
+    - tqdm
+    - scipy
+    - numpy
+    - notebook
+    - nodejs
+    - requests
+    - joblib 
+    - pytest
