@@ -143,7 +143,7 @@ class FullyConnected_BatchNorm(nn.Module):
         # Define layers over your two random variables
         self.fc_var1 = nn.Linear(var1_dim, H[0])
         self.fc_var2 = nn.Linear(var2_dim, H[0])
-        
+
         # initial batch_norm layer
         self.bn0 = nn.BatchNorm1d(H[0])
 

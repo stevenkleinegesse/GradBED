@@ -4,8 +4,6 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 
-# ------ MINE-F LOSS FUNCTION ------ #
-
 def jsd_loss(x_sample, y_sample, model, device):
 
     # Shuffle y-data for the second expectation
@@ -22,6 +20,7 @@ def jsd_loss(x_sample, y_sample, model, device):
     first_term = torch.mean(-F.softplus(-pred_joint))
     second_term = torch.mean(F.softplus(pred_marginals))
 
+    # compute mi
     mi = first_term - second_term
 
     # we want to maximize the lower bound; PyTorch minimizes

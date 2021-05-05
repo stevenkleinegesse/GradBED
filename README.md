@@ -15,6 +15,12 @@ conda activate gradbed-env
 python setup.py develop
 ```
 
+Separately install the torchsde package for simulating the SDE-based epidemiological models:
+
+```
+pip install git+https://github.com/google-research/torchsde.git
+```
+
 If the dependencies in `environment.yml` change, update dependencies with
 
 ```bash
@@ -36,6 +42,12 @@ Then install dependencies in the GPU environment file:
 
 ```bash
 conda env update --file environment-gpu.yml
+```
+
+Separately install the torchsde package for simulating the SDE-based epidemiological models:
+
+```
+pip install git+https://github.com/google-research/torchsde.git
 ```
 
 The above command with the environment file can also be used to update the Conda environment when dependencies in the environment file change.

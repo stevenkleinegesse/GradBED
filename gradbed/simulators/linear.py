@@ -14,7 +14,7 @@ def sim_linear_data(d, prior, device):
         (len(d), len(prior)),
         device=device,
         dtype=torch.float).normal_(mean=0, std=1)
-    
+
     # sample random gamma noise
     n_g = gamma.Gamma(
         torch.tensor([2.0], device=device),
@@ -25,15 +25,18 @@ def sim_linear_data(d, prior, device):
     vz = torch.zeros_like(n_n, device=device)
 
     # predictions of model 1 + masking
-    y_1 = prior[:, 1] + torch.mul(prior[:, 2], d) + torch.where(prior[:, 0] == 1, n_n + n_g, vz)
+    y_1 = prior[:, 1] + torch.mul(prior[:, 2], d) + torch.where(
+        prior[:, 0] == 1, n_n + n_g, vz)
 
     # predictions of model 2
     delta = torch.tensor(1e-4, dtype=torch.float, device=device)
     d_mask_abs = torch.where(torch.abs(d) > delta, torch.abs(d), delta)
-    y_2 = prior[:, 3] + torch.mul(prior[:, 4], torch.log(d_mask_abs)) + torch.where(prior[:, 0] == 2, n_n + n_g, vz)
+    y_2 = prior[:, 3] + torch.mul(prior[:, 4], torch.log(
+        d_mask_abs)) + torch.where(prior[:, 0] == 2, n_n + n_g, vz)
 
     # predictions of model 3
-    y_3 = prior[:, 5] + torch.mul(prior[:, 6], torch.sqrt(torch.abs(d))) + torch.where(prior[:, 0] == 3, n_n + n_g, vz)
+    y_3 = prior[:, 5] + torch.mul(prior[:, 6], torch.sqrt(
+        torch.abs(d))) + torch.where(prior[:, 0] == 3, n_n + n_g, vz)
 
     data = y_1.T + y_2.T + y_3.T
 
@@ -191,7 +194,7 @@ class LinearDatasetPE(torch.utils.data.Dataset):
         indicator = X[:, 0][0]
         assert torch.all(torch.eq(X[:, 0], indicator))
 
-        # check for which model we want to estimate the parameters 
+        # check for which model we want to estimate the parameters
         if indicator == 1:
             self.X = X[:, 1:3]
         elif indicator == 2:
@@ -219,7 +222,7 @@ class LinearDatasetPE(torch.utils.data.Dataset):
     def __len__(self):
         """Number of samples in the dataset"""
         return len(self.X)
-    
+
 class LinearDatasetFP(torch.utils.data.Dataset):
 
     def __init__(self, d, future_d, prior, device):
@@ -287,7 +290,7 @@ class LinearSimulatorAnalytic(torch.autograd.Function):
             torch.tensor([1 / 2.0], device=device)).sample(
                 sample_shape=(len(input), len(params))).reshape(
                 len(input), len(params))
-        
+
         # perform forward pass
         y = (params[:, 0] + torch.mul(params[:, 1], input) + n_n + n_g).T
 

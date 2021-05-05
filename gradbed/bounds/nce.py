@@ -1,8 +1,6 @@
 # PyTorch stuff
 import torch
 
-# ------ MINE-F LOSS FUNCTION ------ #
-
 def nce_loss(x_sample, y_sample, model, device, mode='likelihood'):
 
     if mode == 'likelihood':

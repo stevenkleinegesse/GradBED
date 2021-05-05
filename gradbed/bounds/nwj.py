@@ -3,8 +3,6 @@ import numpy as np
 # PyTorch stuff
 import torch
 
-# ------ MINE-F LOSS FUNCTION ------ #
-
 def nwj_loss(x_sample, y_sample, model, device):
 
     # Shuffle y-data for the second expectation
