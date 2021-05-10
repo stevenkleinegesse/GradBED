@@ -58,7 +58,7 @@ class SIR_SDE(torch.nn.Module):
 
 # --- HYPER-PARAMETERS --- #
 
-DATASIZE = 10000  # number of time-series to simulate
+DATASIZE = 30000  # number of time-series to simulate
 
 N = 500.0  # fixed population size
 I0 = 2.0  # initial number of infected

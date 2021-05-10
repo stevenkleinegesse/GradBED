@@ -66,7 +66,7 @@ class SEIR_SDE(torch.nn.Module):
 
 # --- HYPER-PARAMETERS --- #
 
-DATASIZE = 10000  # number of samples
+DATASIZE = 30000  # number of samples
 
 N = 500.0  # fixed population size
 E0 = 0  # initial number of infected / exposed
@@ -112,6 +112,6 @@ save_dict["grads"] = grads
 save_dict["N"] = N
 save_dict["I0"] = I0
 
-torch.save(save_dict, '../data/seir_sde_data_tmp.pt')
+torch.save(save_dict, '../data/seir_sde_data.pt')
 
-print("Simulation Time: %s seconds" % (time.time() - start_time()))
+print("Simulation Time: %s seconds" % (end_time - start_time))

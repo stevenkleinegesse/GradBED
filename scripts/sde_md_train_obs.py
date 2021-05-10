@@ -200,13 +200,24 @@ else:
 
 data_sir = torch.load('../data/sir_sde_data.pt')
 data_seir = torch.load('../data/seir_sde_data.pt')
+data_sir= {
+    key: value.to(device)
+    for key, value in data_sir.items()
+    if isinstance(value, torch.Tensor)
+}
+data_seir = {
+    key: value.to(device)
+    for key, value in data_seir.items()
+    if isinstance(value, torch.Tensor)
+}
+
 
 if Filter:
     # find the indices corresponding to non-trivial solutions
     idx_sir_good = np.where(
-        np.mean(data_sir['ys'][:, :, 1].data.numpy(), axis=0) >= 1)[0]
+        np.mean(data_sir['ys'][:, :, 1].data.cpu().numpy(), axis=0) >= 1)[0]
     idx_seir_good = np.where(
-        np.mean(data_seir['ys'][:, :, 2].data.numpy(), axis=0) >= 1)[0]
+        np.mean(data_seir['ys'][:, :, 2].data.cpu().numpy(), axis=0) >= 1)[0]
     idx_good = np.intersect1d(idx_sir_good, idx_seir_good)
     # update the dataset with non-trivial solutions
     data_sir['ys'] = data_sir['ys'][:, idx_good, :]
@@ -355,21 +366,21 @@ for epoch in pbar:
 
         if PRINT_D:
             pbar.set_postfix(
-                MI='{:.3f}'.format(-tl.data.numpy()),
-                JSD='{:.3f}'.format(-loss.data.numpy()),
-                d=np.sort(d.data.numpy().reshape(-1)).astype(np.int16))
+                MI='{:.3f}'.format(-tl.data.cpu().numpy()),
+                JSD='{:.3f}'.format(-loss.data.cpu().numpy()),
+                d=np.sort(d.data.cpu().numpy().reshape(-1)).astype(np.int16))
         else:
             pbar.set_postfix(
-                MI='{:.3f}'.format(-tl.data.numpy()),
-                JSD='{:.3f}'.format(-loss.data.numpy()))
+                MI='{:.3f}'.format(-tl.data.cpu().numpy()),
+                JSD='{:.3f}'.format(-loss.data.cpu().numpy()))
     else:
         if PRINT_D:
             pbar.set_postfix(
-                JSD='{:.3f}'.format(-loss.data.numpy()),
-                d=np.sort(d.data.numpy().reshape(-1)).astype(np.int16))
+                JSD='{:.3f}'.format(-loss.data.cpu().numpy()),
+                d=np.sort(d.data.cpu().numpy().reshape(-1)).astype(np.int16))
         else:
             pbar.set_postfix(
-                JSD='{:.3f}'.format(-loss.data.numpy()))
+                JSD='{:.3f}'.format(-loss.data.cpu().numpy()))
 
     # LR scheduler step for psi and designs
     scheduler_psi.step()
