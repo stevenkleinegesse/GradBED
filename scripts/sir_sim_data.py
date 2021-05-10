@@ -6,19 +6,18 @@ import sys
 
 import time
 
-start_time = time.time()
-
 # needed for torchsde
 sys.setrecursionlimit(1500)
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # --- FUNCTIONS --- #
 
+
 class SIR_SDE(torch.nn.Module):
 
-    noise_type = 'general'
-    sde_type = 'ito'
+    noise_type = "general"
+    sde_type = "ito"
 
     def __init__(self, params, N):
 
@@ -34,7 +33,7 @@ class SIR_SDE(torch.nn.Module):
         p_inf = self.params[:, 0] * x[:, 0] * x[:, 1] / self.N
         p_rec = self.params[:, 1] * x[:, 1]
 
-        return torch.stack([-p_inf, p_inf - p_rec], axis=1)
+        return torch.stack([-p_inf, p_inf - p_rec], dim=1)
 
     # Diffusion matrix
     def g(self, t, x):
@@ -46,11 +45,15 @@ class SIR_SDE(torch.nn.Module):
         p_inf = self.params[:, 0] * x[:, 0] * x[:, 1] / self.N
         p_rec = self.params[:, 1] * x[:, 1]
 
-        return torch.stack([-torch.sqrt(p_inf),
-                            torch.zeros(len(p_inf)),
-                            torch.sqrt(p_inf),
-                            -torch.sqrt(p_rec)],
-                           axis=1).reshape(-1, 2, 2)
+        return torch.stack(
+            [
+                -torch.sqrt(p_inf),
+                torch.zeros(len(p_inf), device=device),
+                torch.sqrt(p_inf),
+                -torch.sqrt(p_rec),
+            ],
+            dim=1,
+        ).reshape(-1, 2, 2)
 
 
 # --- HYPER-PARAMETERS --- #
@@ -76,6 +79,8 @@ prior_samples = torch.tensor(ps, dtype=torch.float, device=device)
 
 # --- SOLVE THE SDEs --- #
 
+start_time = time.time()
+
 # define the SDE object and solve SDE equations
 sde = SIR_SDE(prior_samples, N).to(device)  # sde object
 ts = torch.linspace(T0, T, GRID, device=device)  # time grid
@@ -85,16 +90,18 @@ ys = torchsde.sdeint(sde, y0, ts)  # solved sde
 # compute gradients via finite-difference methods
 grads = (ys[1:, :, :] - ys[:-1, :, :]) / (ts[1] - ts[0])
 
+end_time = time.time()
+
 # --- SAVE DATA --- #
 
 save_dict = dict()
-save_dict['prior_samples'] = prior_samples
-save_dict['ts'] = ts
-save_dict['ys'] = ys
-save_dict['grads'] = grads
-save_dict['N'] = N
-save_dict['I0'] = I0
+save_dict["prior_samples"] = prior_samples
+save_dict["ts"] = ts
+save_dict["ys"] = ys
+save_dict["grads"] = grads
+save_dict["N"] = N
+save_dict["I0"] = I0
 
-torch.save(save_dict, '../data/sir_sde_data_tmp.pt')
+torch.save(save_dict, "data/sir_sde_data.pt")
 
-print("Simulation Time: %s seconds" % (time.time() - start_time))
+print("Simulation Time: %s seconds" % (end_time - start_time))
