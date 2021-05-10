@@ -1,6 +1,6 @@
 # GradBED
 
-Research code for the submission "Gradient-Based Bayesian Experimental Design for Implicit Models using Mutual Information Lower Bounds".
+Research code for the submission "Gradient-Based Bayesian Experimental Design for Implicit Models using Mutual Information Lower Bounds". This repository is actively being updated to make the code more usable for others.
 
 ![](./plots/training_animation.gif)
 

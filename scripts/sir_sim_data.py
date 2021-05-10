@@ -102,6 +102,6 @@ save_dict["grads"] = grads
 save_dict["N"] = N
 save_dict["I0"] = I0
 
-torch.save(save_dict, "data/sir_sde_data.pt")
+torch.save(save_dict, "../data/sir_sde_data.pt")
 
 print("Simulation Time: %s seconds" % (end_time - start_time))
